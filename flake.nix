@@ -3,6 +3,7 @@
   inputs.std.url = "github:divnix/std";
   inputs.n2c.url = "github:nlewo/nix2container";
   inputs.data-merge.url = "github:divnix/data-merge";
+  inputs.nix-inclusive.url = "github:input-output-hk/nix-inclusive";
   inputs = {
     # --- Bitte Stack ----------------------------------------------
     bitte.url = "github:input-output-hk/bitte";
@@ -23,13 +24,13 @@
       flake = false;
     };
     cardano-explorer-app = {
-      url = "github:input-output-hk/cardano-explorer-app";
+      url = "github:input-output-hk/cardano-explorer-app/fix-nix-system";
       flake = false;
     };
-    cardano-rosetta = {
-      url = "github:input-output-hk/cardano-rosetta";
-      flake = false;
-    };
+    #cardano-rosetta = {
+    #  url = "github:input-output-hk/cardano-rosetta";
+    #  flake = false;
+    #};
     # --------------------------------------------------------------
   };
   outputs = inputs: let

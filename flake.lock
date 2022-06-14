@@ -2206,6 +2206,39 @@
         "type": "github"
       }
     },
+    "cardano-explorer-app": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1655291958,
+        "narHash": "sha256-OByt95cIJrA8pXsvCztsWmFcDaQaSYGohSOHoaZWKJs=",
+        "owner": "input-output-hk",
+        "repo": "cardano-explorer-app",
+        "rev": "a65938afe159adb1d1e2808305a7316738f5e634",
+        "type": "github"
+      },
+      "original": {
+        "owner": "input-output-hk",
+        "ref": "fix-nix-system",
+        "repo": "cardano-explorer-app",
+        "type": "github"
+      }
+    },
+    "cardano-graphql": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1648808204,
+        "narHash": "sha256-UHPeoz8OHN/Ypkqb36Z/VHlYDMFuzQgAm+9IJtXlibA=",
+        "owner": "input-output-hk",
+        "repo": "cardano-graphql",
+        "rev": "610424b95053078c20be121d823ef0dd035711f0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "input-output-hk",
+        "repo": "cardano-graphql",
+        "type": "github"
+      }
+    },
     "cardano-iohk-nix": {
       "inputs": {
         "nixpkgs": "nixpkgs_29"
@@ -9877,6 +9910,24 @@
         "type": "github"
       }
     },
+    "nix-inclusive": {
+      "inputs": {
+        "stdlib": "stdlib_12"
+      },
+      "locked": {
+        "lastModified": 1628098927,
+        "narHash": "sha256-Ft4sdf7VPL8MQtu18AAPiN2s5pUsbv+3RxqzJSa/yzg=",
+        "owner": "input-output-hk",
+        "repo": "nix-inclusive",
+        "rev": "13123eb7a8c3359738a4756b8d645729e8655b27",
+        "type": "github"
+      },
+      "original": {
+        "owner": "input-output-hk",
+        "repo": "nix-inclusive",
+        "type": "github"
+      }
+    },
     "nix-tools": {
       "flake": false,
       "locked": {
@@ -15303,11 +15354,14 @@
         "bitte-cells": "bitte-cells",
         "capsules": "capsules_2",
         "cardano-db-sync": "cardano-db-sync_2",
+        "cardano-explorer-app": "cardano-explorer-app",
+        "cardano-graphql": "cardano-graphql",
         "cardano-node": "cardano-node_2",
         "cardano-ogmios": "cardano-ogmios",
         "cardano-wallet": "cardano-wallet_2",
         "data-merge": "data-merge_4",
         "n2c": "n2c_3",
+        "nix-inclusive": "nix-inclusive",
         "nixpkgs": "nixpkgs_83",
         "std": "std_3"
       }
@@ -16069,6 +16123,21 @@
       }
     },
     "stdlib_11": {
+      "locked": {
+        "lastModified": 1590026685,
+        "narHash": "sha256-E5INrVvYX/P/UpcoUFDAsuHem+lsqT+/teBs9O7oc9Q=",
+        "owner": "manveru",
+        "repo": "nix-lib",
+        "rev": "99088cf7febcdb21afd375a335dcafa959bef3ed",
+        "type": "github"
+      },
+      "original": {
+        "owner": "manveru",
+        "repo": "nix-lib",
+        "type": "github"
+      }
+    },
+    "stdlib_12": {
       "locked": {
         "lastModified": 1590026685,
         "narHash": "sha256-E5INrVvYX/P/UpcoUFDAsuHem+lsqT+/teBs9O7oc9Q=",
