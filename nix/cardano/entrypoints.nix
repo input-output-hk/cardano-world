@@ -26,21 +26,21 @@
 
     # CASE: built-in environment
     if [ -n "''${ENVIRONMENT:-}" ]; then
-      echo "Using the preset environment $ENVIRONMENT ..." > /dev/stderr
+      echo "Using the preset environment $ENVIRONMENT ..." >&2
 
       NODE_CONFIG="$DATA_DIR/config/$ENVIRONMENT/config.json"
       NODE_TOPOLOGY="''${NODE_TOPOLOGY:-$DATA_DIR/config/$ENVIRONMENT/topology.json}"
 
     # CASE: premissioned long running environment
     elif [ -n "''${CONSUL_KV_PATH:-}" ] || [ -n "''${VAULT_KV_PATH:-}" ]; then
-      echo "Using a long running environment as defined by kv (consul & vault) ..." > /dev/stderr
+      echo "Using a long running environment as defined by kv (consul & vault) ..." >&2
 
       load_kv_config
       [ "''${producer:-}" == "1" ] && load_kv_secrets
 
     # CASE: permissioned short running environment
     else
-      echo "Using custom config: $NODE_CONFIG ..." > /dev/stderr
+      echo "Using custom config: $NODE_CONFIG ..." >&2
 
       [ -z "''${NODE_CONFIG:-}" ] && echo "NODE_CONFIG env var must be set -- aborting" && exit 1
     fi
@@ -67,20 +67,20 @@
 
       # shellcheck source=/dev/null
       source ${nixpkgs.cacert}/nix-support/setup-hook
-      echo "Downloading $SNAPSHOT_BASE_URL/$SNAPSHOT_FILE_NAME into $SNAPSHOT_DIR  ..." > /dev/stderr
+      echo "Downloading $SNAPSHOT_BASE_URL/$SNAPSHOT_FILE_NAME into $SNAPSHOT_DIR  ..." >&2
       if curl -L "$SNAPSHOT_BASE_URL/$SNAPSHOT_FILE_NAME" --output "$SNAPSHOT_DIR/$SNAPSHOT_FILE_NAME"; then
-        echo "Downloading $SNAPSHOT_BASE_URL/$SNAPSHOT_FILE_NAME.sha256sum into $SNAPSHOT_DIR ..." > /dev/stderr
+        echo "Downloading $SNAPSHOT_BASE_URL/$SNAPSHOT_FILE_NAME.sha256sum into $SNAPSHOT_DIR ..." >&2
         if curl -L "$SNAPSHOT_BASE_URL/$SNAPSHOT_FILE_NAME.sha256sum" --output "$SNAPSHOT_DIR/$SNAPSHOT_FILE_NAME.sha256sum"; then
-          echo -n "pushd: " > /dev/stderr
-          pushd "$SNAPSHOT_DIR" > /dev/stderr
-          echo "Validating sha256sum for ./$SNAPSHOT_FILE_NAME." > /dev/stderr
-          if sha256sum -c "$SNAPSHOT_FILE_NAME.sha256sum" > /dev/stderr; then
-            echo "Downloading  $SNAPSHOT_BASE_URL/$SNAPSHOT_FILE_NAME{,.sha256sum} into $SNAPSHOT_DIR complete." > /dev/stderr
+          echo -n "pushd: " >&2
+          pushd "$SNAPSHOT_DIR" >&2
+          echo "Validating sha256sum for ./$SNAPSHOT_FILE_NAME." >&2
+          if sha256sum -c "$SNAPSHOT_FILE_NAME.sha256sum" >&2; then
+            echo "Downloading  $SNAPSHOT_BASE_URL/$SNAPSHOT_FILE_NAME{,.sha256sum} into $SNAPSHOT_DIR complete." >&2
           else
             echo "Could retrieve snapshot, but could not validate its checksum -- aborting" && exit 1
           fi
-          echo -n "popd: " > /dev/stderr
-          popd > /dev/stderr
+          echo -n "popd: " >&2
+          popd >&2
         else
           echo "Could retrieve snapshot, but not its sha256 file -- aborting" && exit 1
         fi
@@ -95,9 +95,9 @@
 
       [ -n "''${INITIALIZED:-}" ] && return
 
-      echo "Extracting snapshot to $targetDir ..." > /dev/stderr
+      echo "Extracting snapshot to $targetDir ..." >&2
       if tar --strip-components="$strip" -C "$targetDir" -zxf "$SNAPSHOT_DIR/$SNAPSHOT_FILE_NAME"; then
-        echo "Extracting snapshot to $targetDir complete." > /dev/stderr
+        echo "Extracting snapshot to $targetDir complete." >&2
       else
         echo "Extracting snapshot to $targetDir failed -- aborting" && exit 1
       fi
@@ -209,7 +209,7 @@
       while true
       do
         sleep 30
-        echo "Service discovery heartbeat - every 30 seconds" > /dev/stderr
+        echo "Service discovery heartbeat - every 30 seconds" >&2
         original_hash="$(md5sum "$NODE_TOPOLOGY")"
         srv_discovery
         new_hash="$(md5sum "$NODE_TOPOLOGY")"
@@ -328,7 +328,7 @@ in {
       [ -n "''${SHELLEY_OPCERT:-}" ] && args+=("--shelley-operational-certificate" "$SHELLEY_OPCERT")
 
       if [ -z "''${NODE_TOPOLOGY:-}" ]; then
-        echo "Doing legacy service discovery ..." > /dev/stderr
+        echo "Doing legacy service discovery ..." >&2
         srv_discovery
         args+=("--topology" "$NODE_TOPOLOGY")
 
@@ -339,11 +339,11 @@ in {
         trap "kill" "''${sid[@]}" INT
 
         # SIGHUP reloads --topology
-        echo Running node in background > /dev/stderr
+        echo Running node in background >&2
         ${packages.cardano-node}/bin/cardano-node run "''${args[@]}" &
         CARDANO_PID="$!"
         sid=("$CARDANO_PID")
-        echo Running service discovery loop > /dev/stderr
+        echo Running service discovery loop >&2
         watch_srv_discovery "$CARDANO_PID"
       else
         [ -z "''${NODE_TOPOLOGY:-}" ] && echo "NODE_TOPOLOGY env var must be set -- aborting" && exit 1
@@ -383,7 +383,7 @@ in {
         while true
         do
           sleep 15
-          echo "Service discovery heartbeat - every 15 seconds" > /dev/stderr
+          echo "Service discovery heartbeat - every 15 seconds" >&2
           original_addr="$PSQL_ADDR0"
           pgpassfile_discovery
           new_addr="$PSQL_ADDR0"
@@ -403,7 +403,7 @@ in {
         export PGPASSFILE=/secrets/pgpass
         export PSQL_ADDR0
 
-        echo "Retrieving db credentials from vault kv ..." > /dev/stderr
+        echo "Retrieving db credentials from vault kv ..." >&2
         [ -z "''${VAULT_KV_PATH:-}" ] && echo "VAULT_KV_PATH env var must be set -- aborting" && exit 1
         [ -z "''${VAULT_ADDR:-}" ] && echo "VAULT_ADDR env var must be set -- aborting" && exit 1
         [ -z "''${VAULT_TOKEN:-}" ] && echo "VAULT_TOKEN env var must be set -- aborting" && exit 1
@@ -433,7 +433,7 @@ in {
       }
 
       if [ -n "''${VAULT_KV_PATH:-}" ]; then
-        echo "Retrieving db leader from $MASTER_REPLICA_SRV_DNS ..." > /dev/stderr
+        echo "Retrieving db leader from $MASTER_REPLICA_SRV_DNS ..." >&2
         pgpassfile_discovery
       fi
 
@@ -453,7 +453,7 @@ in {
         pull_snapshot
         extract_snapshot_tgz_to "$DB_DIR/db-sync"
         if [ -z "''${INITIALIZED:-}" ]; then
-          echo Loading snapshot into database ... > /dev/stderr
+          echo Loading snapshot into database ... >&2
           DBNAME="$(cut -d ":" -f 3 "''${PGPASSFILE}")"
           DBUSER="$(cut -d ":" -f 4 "''${PGPASSFILE}")"
           DBHOST="$(cut -d ":" -f 1 "''${PGPASSFILE}")"
@@ -480,11 +480,11 @@ in {
         trap "kill" "''${sid[@]}" INT
 
         # SIGHUP reloads --topology
-        echo Running db-sync in background > /dev/stderr
+        echo Running db-sync in background >&2
         ${packages.cardano-db-sync}/bin/cardano-db-sync "''${args[@]}" &
         DB_SYNC_PID="$!"
         sid=("$DB_SYNC_PID")
-        echo Running leader discovery loop > /dev/stderr
+        echo Running leader discovery loop >&2
         watch_leader_discovery "$DB_SYNC_PID"
       else
         [ -z "''${PGPASSFILE:-}" ] && echo "PGPASSFILE env var must be set -- aborting" && exit 1
