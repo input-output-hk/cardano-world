@@ -36,6 +36,7 @@ in {
   cardano-db-sync = cardano-db-sync.packages.cardano-db-sync;
   cardano-graphql = (import (cardano-graphql + "/nix/pkgs.nix") {inherit (nixpkgs) system;}).packages.cardano-graphql;
   graphql-engine = (import (cardano-graphql + "/nix/pkgs.nix") {inherit (nixpkgs) system;}).packages.graphql-engine;
+  hasura-cli = (import (cardano-graphql + "/nix/pkgs.nix") {inherit (nixpkgs) system;}).packages.hasura-cli;
   cardano-explorer-app = let
     # TODO fix the ugliness to make this work
     package = nixpkgs.callPackage (cardano-explorer-app + "/nix/cardano-explorer-app.nix") {
