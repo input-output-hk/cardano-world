@@ -3,7 +3,7 @@
 ,
 }:
 let
-  inherit (inputs) self std nixpkgs iohk-nix cardano-node
+  inherit (inputs) self std nixpkgs iohk-nix
     cardano-wallet cardano-db-sync cardano-ogmios cardano-graphql cardano-explorer-app nix-inclusive;
   inherit (inputs.cells) cardano;
   inherit (nixpkgs) lib;
@@ -27,8 +27,7 @@ let
     (import ./haskell.nix {
       inherit lib haskell-nix;
       inherit (inputs) byron-chain;
-      # TODO: switch to self after mono-repo branch is merged:
-      src = cardano-node;
+      src = self;
     }).extend (final: prev: {
       release = nixpkgs.callPackage ./binary-release.nix {
         inherit (final.pkgs) stdenv;

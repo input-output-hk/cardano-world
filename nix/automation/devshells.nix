@@ -72,12 +72,6 @@ in {
       inputs.cells.cardano.devshellProfiles.world
     ];
   };
-  monorepo = std.lib.mkShell {
-    imports = [
-      cardanoWorld
-      inputs.cells.cardano.devshellProfiles.monorepo
-    ];
-  };
   minimal = std.lib.mkShell {
     imports = [
       cardanoWorld

@@ -2,7 +2,7 @@
   inputs,
   cell,
 }: let
-  inherit (inputs) nixpkgs cells iohk-nix cardano-node;
+  inherit (inputs) nixpkgs cells iohk-nix;
   inherit (cells.cardano) packages oci-images;
   inherit (nixpkgs) lib;
   inherit (inputs.bitte-cells._writers.library) writeShellApplication;
@@ -67,23 +67,6 @@
       fi
   '';
 in {
-  update-mono-repo = writeShellApplication {
-    name = "update-mono-repo";
-    description = "Update the checksums neccesary to build the mono-repo";
-    text = let project = packages.project.appendModule { src = lib.mkForce cardano-node; }; in ''
-      # go to project root directory:
-      while [[ $PWD != / && ! -e "flake.nix" ]]; do
-        cd ..
-      done
-
-      nix-prefetch-git --quiet https://github.com/input-output-hk/cardano-node ${cardano-node.rev} | jq -r .sha256 > nix/cardano/prepare-mono-repo/cardano-node.sha256
-      nix-prefetch-git --quiet https://github.com/input-output-hk/ouroboros-network ${project.pkg-set.config.packages.ouroboros-network.src.rev} | jq -r .sha256 > nix/cardano/prepare-mono-repo/ouroboros-network.sha256
-      nix-prefetch-git --quiet https://github.com/input-output-hk/cardano-ledger ${project.pkg-set.config.packages.cardano-ledger-core.src.rev} | jq -r .sha256 > nix/cardano/prepare-mono-repo/cardano-ledger.sha256
-      nix-prefetch-git --quiet https://github.com/input-output-hk/ekg-forward ${project.pkg-set.config.packages.ekg-forward.src.rev} | jq -r .sha256 > nix/cardano/prepare-mono-repo/ekg-forward.sha256
-      direnv reload
-    '';
-    runtimeInputs = with nixpkgs; [ nix-prefetch-git git jq];
-  };
   update-cabal-source-repo-checksums = writeShellApplication {
     name = "update-cabal-source-repo-checksums";
     text = ''

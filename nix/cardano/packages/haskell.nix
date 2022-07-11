@@ -42,14 +42,9 @@ in
       name = "cardano-world-src";
       filter = path: type:
         let relPath = lib.removePrefix "${src.outPath}/" path; in
-        # excludes directories not part of cabal project:
-        (type != "directory" || (builtins.match ".*/.*" relPath != null) || (!(lib.elem relPath [
-          "nix"
-          "doc"
-          "docs"
-        ]) && !(lib.hasPrefix "." relPath)))
-        # only keep cabal.project from files at root:
-        && (type == "directory" || builtins.match ".*/.*" relPath != null || (relPath == "cabal.project"))
+        # only keep cabal.project and directories under src:
+        (relPath == "cabal.project" || relPath == "src" || (type == "directory" && (builtins.match "src/.*" relPath != null))
+          || (builtins.match "src/.*/.*" relPath != null))
         && (lib.cleanSourceFilter path type)
         && (haskell-nix.haskellSourceFilter path type)
         && !(lib.hasSuffix ".gitignore" relPath)
