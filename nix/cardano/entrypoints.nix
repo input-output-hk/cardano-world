@@ -565,4 +565,12 @@ in {
       exec ${packages.ogmios}/bin/ogmios "''${args[@]}"
     '';
   };
+
+  cardano-faucet = writeShellApplication {
+    debugInputs = [packages.cardano-cli];
+    name = "entrypoint";
+    text = ''
+      ${packages.cardano-cli}/bin/cardano-new-faucet
+    '';
+  };
 }

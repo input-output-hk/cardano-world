@@ -74,4 +74,16 @@ in {
     ];
     config.User = "1000:1000";
   };
+  cardano-faucet = buildDebugImage entrypoints.cardano-faucet {
+    name = "registry.ci.iog.io/cardano-faucet";
+    maxLayers = 25;
+    layers = [
+      (n2c.buildLayer {deps = [packages.cardano-faucet];})
+    ];
+    contents = [nixpkgs.bashInteractive];
+    config.Cmd = [
+      "${entrypoints.cardano-faucet}/bin/entrypoint"
+    ];
+    config.User = "1000:1000";
+  };
 }
