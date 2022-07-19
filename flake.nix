@@ -10,7 +10,9 @@
     n2c.url = "github:nlewo/nix2container";
     haskell-nix = {
       url = "github:input-output-hk/haskell.nix";
-      inputs.hackage.follows = "hackage";
+      inputs = {
+        hackage.follows = "hackage";
+      };
     };
     hackage = {
       url = "github:input-output-hk/hackage.nix";

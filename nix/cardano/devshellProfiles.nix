@@ -3,7 +3,7 @@
 ,
 }:
 let
-  inherit (inputs) nixpkgs;
+  inherit (inputs) nixpkgs iohk-nix;
   inherit (nixpkgs) lib;
   inherit (cell) packages;
   inherit (packages.project.pkgs) haskell-nix;
@@ -43,7 +43,15 @@ rec {
       minimal
       packages.project.devshell
     ];
+
     commands = [
+      {
+        package = nixpkgs.callPackage iohk-nix.cabal-wrapper  {
+          cabal-install = haskell-nix.cabal-install.${compiler-nix-name};
+        };
+        name = "cabal";
+        category = "development";
+      }
       {
         package = haskell-nix.tool compiler-nix-name "hlint" {
           version = "3.2.7";
