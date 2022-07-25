@@ -6253,8 +6253,7 @@
         "nix-inclusive": "nix-inclusive",
         "nixpkgs": "nixpkgs_59",
         "nixpkgs-haskell": [
-          "haskell-nix",
-          "nixpkgs-unstable"
+          "nixpkgs"
         ],
         "std": "std_2",
         "tullia": "tullia"

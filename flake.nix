@@ -43,7 +43,7 @@
     # --------------------------------------------------------------
     # --- Auxiliaries ----------------------------------------------
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
-    nixpkgs-haskell.follows = "haskell-nix/nixpkgs-unstable";
+    nixpkgs-haskell.follows = "nixpkgs";
     capsules.url = "github:input-output-hk/devshell-capsules";
     # --------------------------------------------------------------
     # --- Bride Heads ----------------------------------------------
