@@ -46,7 +46,7 @@ let
 in
 {
   inherit project; # TODO REMOVE
-  inherit (project.exes) cardano-node cardano-cli cardano-submit-api cardano-tracer;
+  inherit (project.exes) cardano-node cardano-cli cardano-submit-api cardano-tracer cardano-new-faucet;
   inherit (project.hsPkgs.bech32.components.exes) bech32;
   inherit (project.hsPkgs.network-mux.components.exes) cardano-ping;
   inherit (cardano-wallet.packages) cardano-wallet;

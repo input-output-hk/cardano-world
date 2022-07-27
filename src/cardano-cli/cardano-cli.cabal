@@ -70,6 +70,13 @@ library
                         Cardano.CLI.Byron.UpdateProposal
                         Cardano.CLI.Byron.Vote
 
+                        Cardano.CLI.Faucet
+                        Cardano.CLI.Faucet.Misc
+                        Cardano.CLI.Faucet.TxUtils
+                        Cardano.CLI.Faucet.Types
+                        Cardano.CLI.Faucet.Utils
+                        Cardano.CLI.Faucet.Web
+
                         Cardano.CLI.Shelley.Commands
                         Cardano.CLI.Shelley.Key
                         Cardano.CLI.Shelley.Orphans
@@ -95,35 +102,40 @@ library
 
   build-depends:        aeson             >= 1.5.6.0
                       , aeson-pretty      >= 0.8.5
+                      , MissingH
                       , ansi-terminal
                       , attoparsec
+                      , base16-bytestring >= 1.0
                       , bech32            >= 1.1.0
                       , binary
                       , bytestring
-                      , base16-bytestring >= 1.0
                       , canonical-json
                       , cardano-api
                       , cardano-binary
-                      , cardano-git-rev
                       , cardano-crypto
                       , cardano-crypto-class
                       , cardano-crypto-wrapper
                       , cardano-data
+                      , cardano-git-rev
                       , cardano-ledger-alonzo
                       , cardano-ledger-byron
                       , cardano-ledger-core
+                      , cardano-ledger-shelley
                       , cardano-ledger-shelley-ma
                       , cardano-prelude
                       , cardano-protocol-tpraos
                       , cardano-slotting
-                      , vector-map
-                      , contra-tracer
                       , cborg >= 0.2.4 && < 0.3
                       , containers
+                      , contra-tracer
                       , cryptonite
                       , directory
                       , filepath
                       , formatting
+                      , vector-map
+                      , http-api-data
+                      , http-client
+                      , http-client-tls
                       , iproute
                       , network
                       , optparse-applicative-fork
@@ -135,16 +147,20 @@ library
                       , ouroboros-network
                       , parsec
                       , prettyprinter
-                      , cardano-ledger-shelley
+                      , servant-client
+                      , servant-server
                       , set-algebra
                       , split
+                      , stm
                       , strict-containers
                       , text
                       , time
                       , transformers
                       , transformers-except
+                      , unordered-containers
                       , utf8-string
                       , vector
+                      , warp
                       , yaml
 
 executable cardano-cli
@@ -204,6 +220,11 @@ test-suite cardano-cli-test
                         Test.OptParse
 
   ghc-options:          -threaded -rtsopts -with-rtsopts=-N -with-rtsopts=-T
+
+executable cardano-new-faucet
+  import:               base, project-config
+  main-is:              cardano-new-faucet.hs
+  build-depends:        cardano-cli
 
 test-suite cardano-cli-golden
   import:               base, project-config
