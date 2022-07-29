@@ -10,7 +10,9 @@
     n2c.url = "github:nlewo/nix2container";
     haskell-nix = {
       url = "github:input-output-hk/haskell.nix";
-      inputs.hackage.follows = "hackage";
+      inputs = {
+        hackage.follows = "hackage";
+      };
     };
     hackage = {
       url = "github:input-output-hk/hackage.nix";
@@ -55,7 +57,10 @@
     };
     cardano-db-sync.url = "github:input-output-hk/cardano-db-sync/13.0.2";
     cardano-wallet.url = "github:input-output-hk/cardano-wallet/v2022-07-01";
-    cardano-ogmios.url = "github:input-output-hk/cardano-ogmios/vasil";
+    ogmios = {
+      url = "github:CardanoSolutions/ogmios/v5.5.2";
+      flake = false;
+    };
     cardano-graphql = {
       url = "github:input-output-hk/cardano-graphql";
       flake = false;
