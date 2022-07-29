@@ -4,7 +4,7 @@
 }:
 let
   inherit (inputs) self std nixpkgs iohk-nix cardano-node
-    cardano-wallet cardano-db-sync cardano-ogmios cardano-graphql cardano-explorer-app nix-inclusive;
+    cardano-wallet cardano-db-sync ogmios cardano-graphql cardano-explorer-app nix-inclusive;
   inherit (inputs.cells) cardano;
   inherit (nixpkgs) lib;
 
@@ -44,6 +44,11 @@ let
   inherit (project.args) compiler-nix-name;
   inherit (project) index-state;
 
+  ogmiosProject = import ./ogmios.nix {
+    inherit haskell-nix;
+    src = ogmios;
+  };
+
 in
 {
   inherit project; # TODO REMOVE
@@ -53,7 +58,7 @@ in
   inherit (cardano-wallet.packages) cardano-wallet;
   inherit (cardano-wallet.packages) cardano-address;
   inherit (cardano-db-sync.packages) cardano-db-sync;
-  inherit (cardano-ogmios.packages) ogmios;
+  inherit (ogmiosProject.hsPkgs.ogmios.components.exes) ogmios;
   cardano-graphql = (import (cardano-graphql + "/nix/pkgs.nix") { inherit (nixpkgs) system; }).packages.cardano-graphql;
   graphql-engine = (import (cardano-graphql + "/nix/pkgs.nix") { inherit (nixpkgs) system; }).packages.graphql-engine;
   cardano-explorer-app =
